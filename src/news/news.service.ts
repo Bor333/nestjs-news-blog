@@ -8,6 +8,13 @@ export interface News {
   countView?: number;
 }
 
+export interface NewsEdit {
+  title?: string;
+  description?: string;
+  author?: string;
+  countView?: number;
+}
+
 function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -38,6 +45,22 @@ export class NewsService {
 
   find(id: News['id']): News | undefined {
     return this.news.find((news) => news.id === id);
+  }
+
+  getAll(): News[] {
+    return this.news;
+  }
+
+  edit(id: number, news: NewsEdit): News | undefined {
+    const indexEditNews = this.news.findIndex((news) => news.id === id);
+    if (indexEditNews !== -1) {
+      this.news[indexEditNews] = {
+        ...this.news[indexEditNews],
+        ...news,
+      };
+      return this.news[indexEditNews];
+    }
+    return undefined;
   }
 
   remove(id: News['id']): boolean {
